@@ -27,6 +27,11 @@ type provider struct {
 	token string
 }
 
+type variable struct {
+	resourceName string
+	value        string
+}
+
 // doCmd represents the do command
 var doCmd = &cobra.Command{
 	Use:   "do",
@@ -81,10 +86,26 @@ func init() {
 
 func createVars() {
 	fmt.Println("create variables here")
+	variableFile, err := os.OpenFile("variables.tf", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer variableFile.Close()
+
+	fmt.Printf("Enter the name of your variable resource name: ")
+	var varName string
+	fmt.Scanln(&varName)
+	fmt.Printf("Enter the value of your variable: ")
+	var varValue string
+	fmt.Scanln(&varValue)
+
+	newVariable := variable{varName, varValue}
+	variableFile.WriteString("variable \"" + newVariable.resourceName + "\" {\n" + "default = \"" + newVariable.value + "\"\n}\n")
+
 }
 
 func createProvider() {
-	fmt.Println("create provider here")
+
 	providerFile, err := os.OpenFile("provider.tf", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println(err)
