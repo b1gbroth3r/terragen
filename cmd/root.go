@@ -1,4 +1,5 @@
 /*
+Package cmd root
 Copyright © 2020 b1gbroth3r <b1gbroth3r@protonmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
